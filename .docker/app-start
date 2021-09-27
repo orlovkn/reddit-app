@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -e
+###############---Setting Permissions for Log Folder---###############
+chmod 777 -R /app/storage
+
+####################---Install Composer---####################
+composer install -vvv --no-cache --no-interaction
+
+####################---Artisan Commands---####################
+echo "###--Running Artisan Commands:"
+
+if [ -z "$(cat .env | grep -w APP_KEY | cut -d"=" -f2)" ]; then
+    echo "--Creating APP_KEY..."
+    php artisan key:generate
+else
+    echo "--APP_KEY has already been set."
+fi
+
+echo '###---Application has been built, starting ...'
+/usr/bin/supervisord -c /etc/supervisor/supervisord.conf

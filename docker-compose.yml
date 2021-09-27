@@ -1,0 +1,49 @@
+version: '3.5'
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
+  vendor_data:
+    driver: local
+
+services:
+  app:
+    container_name: reddit_app
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+    depends_on:
+      - database
+    tty: true
+    networks:
+      - app_network
+    env_file:
+      - .env
+    environment:
+      SERVICE_NAME: app
+      APP_ENV: local
+    ports:
+      - 8051:8000
+    volumes:
+      - ./storage/logs:/app/storage/logs
+      - .:/app
+
+  database:
+    container_name: reddit_db
+    image: mysql:latest
+    tty: true
+    networks:
+      - app_network
+    environment:
+      SERVICE_NAME: database
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: service
+    ports:
+      - 33051:3306
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+      - ./mysql_sql:/app/mysql_sql
