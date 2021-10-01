@@ -11,6 +11,8 @@ RUN chmod +x /usr/local/bin/app-start;
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
 	&& docker-php-ext-install pdo_mysql \
 	&& apk add --no-cache git \
+	&& apk add --no-cache nodejs \
+	&& apk add --no-cache npm \
 	&& apk add --update busybox-suid supervisor autoconf \
 	&& chown -R root:root /app
 USER root
