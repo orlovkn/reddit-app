@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCommunityRequest;
+use App\Models\Community;
 use App\Models\Topic;
 use Illuminate\Http\Request;
 
 class CommunityController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $communities = Community::query()->where('user_id', auth()->id())->orderBy('id', 'desc')->get();
+
+        return view('communities.index', compact('communities'));
     }
 
     public function create()
@@ -24,26 +23,22 @@ class CommunityController extends Controller
         return view('communities.create', compact('topics'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(StoreCommunityRequest $request)
     {
-        //
+        $data = array_merge(
+            ['user_id' => auth()->id()],
+            $request->validated(),
+        );
+
+        $community = Community::create($data);
+        $community->topics()->attach($request->topics);
+
+        return redirect()->route('communities.show', $community);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(Community $community)
     {
-        //
+         return $community->name;
     }
 
     /**
