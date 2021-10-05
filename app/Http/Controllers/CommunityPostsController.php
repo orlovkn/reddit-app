@@ -2,43 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCommunityRequest;
+use App\Http\Requests\StorePostRequest;
 use App\Models\Community;
-use App\Models\Topic;
 use Illuminate\Http\Request;
 
-class CommunityController extends Controller
+class CommunityPostsController extends Controller
 {
-    public function index()
+    public function index(Community $community)
     {
-        $communities = Community::query()->where('user_id', auth()->id())->orderBy('id', 'desc')->get();
-
-        return view('communities.index', compact('communities'));
+        $posts = $community->posts()->latest('id')->paginate(10);
     }
 
-    public function create()
+    public function create(Community $community)
     {
-        $topics = Topic::all();
-
-        return view('communities.create', compact('topics'));
+        return view('posts.create', compact('community'));
     }
 
-    public function store(StoreCommunityRequest $request)
+    public function store(StorePostRequest $request, Community $community)
     {
         $data = array_merge(
             ['user_id' => auth()->id()],
             $request->validated(),
         );
-
-        $community = Community::create($data);
-        $community->topics()->attach($request->topics);
+dd($data);
+        $community->posts()->create($data);
 
         return redirect()->route('communities.show', $community);
     }
 
-    public function show(Community $community)
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
     {
-        return view('communities.show', compact('community'));
+        //
     }
 
     /**
