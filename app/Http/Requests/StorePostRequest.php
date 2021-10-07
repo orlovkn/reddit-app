@@ -24,8 +24,9 @@ class StorePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string'],
+            'title' => ['required', 'string'],
             'text' => ['string', 'min:5'],
+            'url' => ['string', 'nullable'],
         ];
     }
 }

@@ -13,7 +13,7 @@ class Post extends Model
 
     protected $fillable = [
         'community_id',
-        'author_id',
+        'user_id',
         'title',
         'text',
         'image',

@@ -8,7 +8,17 @@
                 <div class="card-header">{{ $community->name }}</div>
 
                 <div class="card-body">
-                    <a href="{{ route('communities.posts.create', $community) }}">Create new post</a>
+                    <a href="{{ route('communities.posts.create', $community) }}" class="btn btn-primary mb-3">Create new post</a>
+                </div>
+
+                <div class="card-body">
+                    @forelse($posts as $post)
+                        <h3><a href="{{route('communities.posts.show', [$community, $post])}}">{{$post->title}}</a></h3>
+                        <p>{{ \Illuminate\Support\Str::words($post->text, 10)}}</p>
+                        <hr>
+                    @empty
+                        No posts
+                    @endforelse
                 </div>
             </div>
         </div>
