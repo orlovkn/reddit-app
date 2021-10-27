@@ -5,10 +5,13 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ $community->name }}</div>
+                <div class="card-header">
+                    <h1>{{ $community->name }}</h1>
+                    <p>{{ $community->description }}</p>
+                </div>
 
                 <div class="card-body">
-                    <a href="{{ route('communities.posts.create', $community) }}" class="btn btn-primary mb-3">Create new post</a>
+                    <a href="{{ route('communities.posts.create', $community) }}" class="btn btn-primary mb-3 float-right">Create new post</a>
                 </div>
 
                 <div class="card-body">

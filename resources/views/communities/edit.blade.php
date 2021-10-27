@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Edit community') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('communities.update') }}">
+                    <form method="POST" action="{{ route('communities.update', $community) }}">
                         @csrf
                         @method('PUT')
 
@@ -45,7 +45,8 @@
 
                             <div class="col-md-6">
                                 @foreach($topics as $topic)
-                                    <input type="checkbox" name="topics[]" value="{{$topic->id}}">
+                                    <input type="checkbox" name="topics[]" value="{{$topic->id}}"
+                                    @if ($community->topics->contains($topic->id)) checked @endif>
                                     {{$topic->name}} <br>
                                 @endforeach
                             </div>
@@ -54,7 +55,7 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Create a community') }}
+                                    {{ __('Edit a community') }}
                                 </button>
                             </div>
                         </div>
