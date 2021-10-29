@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Visitor extends Model
 {
     use HasFactory;
+
+    public function website()
+    {
+        return $this->hasMany(Website::class);
+    }
 }
