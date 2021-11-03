@@ -22,7 +22,7 @@ class WebsiteFactory extends Factory
     public function definition()
     {
         return [
-            'url' => $this->faker->url,
+            'url' => "https://" . $this->faker->word . ".com",
         ];
     }
 }
